@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "677646692580-ko1516inukvudu4hk043jvfa7g7g0tn0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.barberon.app",
+            "certificate_hash": "4e5b52b13f99f6966829ac6c4e04254bfbc4afb2"
+          }
+        },
+        {
           "client_id": "677646692580-arr01b8j2stdclfsj9tuebfdaorihd00.apps.googleusercontent.com",
           "client_type": 3
         }
