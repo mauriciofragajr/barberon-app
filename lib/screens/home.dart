@@ -1,12 +1,11 @@
-import 'package:barberOn/routes/routes.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:barberOn/screens/login.dart';
+import 'package:barberOn/screens/profile.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key key, this.title, this.user}) : super(key: key);
+  HomePage({Key key, this.title}) : super(key: key);
 
   final String title;
-  final FirebaseUser user;
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -24,13 +23,28 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'Em Breve',
+              'Home',
               style: Theme.of(context).textTheme.bodyText2,
             ),
             IconButton(
               icon: Icon(Icons.add),
               onPressed: () {
-                Navigator.of(context).pushNamed(Routes.LOGIN);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => LoginPage(
+                              title: 'Login',
+                            )));
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.supervised_user_circle),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ProfilePage(),
+                        fullscreenDialog: true));
               },
             )
           ],

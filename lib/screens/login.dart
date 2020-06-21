@@ -1,6 +1,7 @@
+import 'package:barberOn/screens/profile.dart';
+import 'package:barberOn/screens/register.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:barberOn/routes/routes.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.title}) : super(key: key);
@@ -73,6 +74,10 @@ class _LoginPageState extends State<LoginPage> {
         print(result.user.isEmailVerified);
         if (result.user.isEmailVerified) {
           Navigator.of(context).pop();
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ProfilePage(), fullscreenDialog: true));
         } else {
           print('Favor, verificar seu E-mail!');
         }
@@ -85,6 +90,11 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void navigateToRegisterPage() {
-    Navigator.pushNamed(context, Routes.REGISTER);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => RegisterPage(
+                  title: 'Cadastrar',
+                )));
   }
 }
