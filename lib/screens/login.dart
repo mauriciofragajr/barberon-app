@@ -119,6 +119,7 @@ class _LoginPageState extends State<LoginPage> {
       final FirebaseUser user =
           (await _auth.signInWithCredential(credential)).user;
       print('Logado como ' + user.displayName);
+      Navigator.of(context).pop();
       return user;
     } catch (e) {
       print('Erro' + e.message);
