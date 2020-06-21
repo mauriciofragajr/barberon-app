@@ -2,6 +2,7 @@ import 'package:barberOn/screens/profile.dart';
 import 'package:barberOn/screens/register.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.title}) : super(key: key);
@@ -15,6 +16,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   String _email, _password;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -50,11 +53,15 @@ class _LoginPageState extends State<LoginPage> {
               obscureText: true,
             ),
             RaisedButton(
-              onPressed: signIn,
+              onPressed: _signIn,
               child: Text('Entrar'),
             ),
             RaisedButton(
-              onPressed: navigateToRegisterPage,
+              onPressed: _signInGoogle,
+              child: Text('Login com google'),
+            ),
+            RaisedButton(
+              onPressed: _navigateToRegisterPage,
               child: Text('Cadastrar'),
             ),
             // Text('Esqueci minha senha')
@@ -64,13 +71,13 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Future<void> signIn() async {
+  Future<void> _signIn() async {
     final formState = _formKey.currentState;
     if (formState.validate()) {
       formState.save();
       try {
-        AuthResult result = await FirebaseAuth.instance
-            .signInWithEmailAndPassword(email: _email, password: _password);
+        AuthResult result = await _auth.signInWithEmailAndPassword(
+            email: _email, password: _password);
         print(result.user.isEmailVerified);
         if (result.user.isEmailVerified) {
           Navigator.of(context).pop();
@@ -89,12 +96,33 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  void navigateToRegisterPage() {
+  void _navigateToRegisterPage() {
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => RegisterPage(
                   title: 'Cadastrar',
                 )));
+  }
+
+  Future<FirebaseUser> _signInGoogle() async {
+    try {
+      final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      final AuthCredential credential = GoogleAuthProvider.getCredential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final FirebaseUser user =
+          (await _auth.signInWithCredential(credential)).user;
+      print("signed in " + user.displayName);
+      return user;
+    } catch (e) {
+      print(e.message);
+      return null;
+    }
   }
 }

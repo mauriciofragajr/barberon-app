@@ -13,6 +13,7 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   String _email, _password;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +49,7 @@ class _RegisterPageState extends State<RegisterPage> {
               obscureText: true,
             ),
             RaisedButton(
-              onPressed: register,
+              onPressed: _register,
               child: Text('Cadastrar'),
             )
           ],
@@ -57,13 +58,13 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  Future<void> register() async {
+  Future<void> _register() async {
     final formState = _formKey.currentState;
     if (formState.validate()) {
       formState.save();
       try {
-        AuthResult result = await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(email: _email, password: _password);
+        AuthResult result = await _auth.createUserWithEmailAndPassword(
+            email: _email, password: _password);
         print(result.user.email);
         result.user.sendEmailVerification();
         Navigator.of(context).pop();
