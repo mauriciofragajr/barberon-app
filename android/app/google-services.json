@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "677646692580",
+    "firebase_url": "https://barberon-app.firebaseio.com",
+    "project_id": "barberon-app",
+    "storage_bucket": "barberon-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:677646692580:android:51b4d4030c220672427cf1",
+        "android_client_info": {
+          "package_name": "br.com.barberon.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "677646692580-arr01b8j2stdclfsj9tuebfdaorihd00.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4fZMi2e3nwj4slBNhcaJShg3bVswnXdw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "677646692580-arr01b8j2stdclfsj9tuebfdaorihd00.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
