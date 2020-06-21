@@ -1,10 +1,12 @@
 import 'package:barberOn/routes/routes.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key key, this.title}) : super(key: key);
+  HomePage({Key key, this.title, this.user}) : super(key: key);
 
   final String title;
+  final FirebaseUser user;
 
   @override
   _HomePageState createState() => _HomePageState();

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:barberOn/routes/routes.dart';
 
 class RegisterPage extends StatefulWidget {
   RegisterPage({Key key, this.title}) : super(key: key);
@@ -65,10 +64,9 @@ class _RegisterPageState extends State<RegisterPage> {
       try {
         AuthResult result = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(email: _email, password: _password);
-        print(result.user.toString());
-        Navigator.pop(context);
-        Navigator.pop(context);
-        // Navigator.pushNamed(context, Routes.HOME);
+        print(result.user.email);
+        result.user.sendEmailVerification();
+        Navigator.of(context).pop();
       } catch (e) {
         print(e.message);
       }
@@ -76,5 +74,4 @@ class _RegisterPageState extends State<RegisterPage> {
       print('invalid form');
     }
   }
-  
 }

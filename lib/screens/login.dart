@@ -55,7 +55,8 @@ class _LoginPageState extends State<LoginPage> {
             RaisedButton(
               onPressed: navigateToRegisterPage,
               child: Text('Cadastrar'),
-            )
+            ),
+            // Text('Esqueci minha senha')
           ],
         ),
       ),
@@ -69,9 +70,12 @@ class _LoginPageState extends State<LoginPage> {
       try {
         AuthResult result = await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: _email, password: _password);
-        print(result.user.toString());
-        Navigator.pop(context);
-        // Navigator.pushNamed(context, Routes.HOME);
+        print(result.user.isEmailVerified);
+        if (result.user.isEmailVerified) {
+          Navigator.of(context).pop();
+        } else {
+          print('Favor, verificar seu E-mail!');
+        }
       } catch (e) {
         print(e.message);
       }
@@ -79,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
       print('invalid form');
     }
   }
-  
+
   void navigateToRegisterPage() {
     Navigator.pushNamed(context, Routes.REGISTER);
   }
