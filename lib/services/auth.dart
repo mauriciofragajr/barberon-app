@@ -17,18 +17,6 @@ class AuthService {
         .map(_userFromFirebaseUser);
   }
 
-  // sign in anon
-  Future signInAnon() async {
-    try {
-      AuthResult result = await _auth.signInAnonymously();
-      FirebaseUser user = result.user;
-      return _userFromFirebaseUser(user);
-    } catch (e) {
-      print(e.toString());
-      return null;
-    }
-  }
-
   Future signInWithGoogle() async {
     try {
       final GoogleSignIn _googleSignIn = GoogleSignIn();
@@ -43,8 +31,8 @@ class AuthService {
       final FirebaseUser user =
           (await _auth.signInWithCredential(credential)).user;
       return user;
-    } catch (e) {
-      print('Erro' + e.message);
+    } catch (error) {
+      print(error.toString());
       return null;
     }
   }

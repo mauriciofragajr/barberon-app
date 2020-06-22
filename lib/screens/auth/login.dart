@@ -6,7 +6,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key key}) : super(key: key);
+  LoginPage({Key key, this.toggleView}) : super(key: key);
+  
+  final Function toggleView;
+  
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -92,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Text('Login com google'),
                 ),
                 RaisedButton(
-                  onPressed: _navigateToRegisterPage,
+                  onPressed: () => widget.toggleView(),
                   child: Text('Cadastrar'),
                 ),
                 SizedBox(height: 12.0),
@@ -106,10 +109,5 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
-  }
-
-  void _navigateToRegisterPage() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => RegisterPage()));
   }
 }
