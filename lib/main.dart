@@ -1,9 +1,13 @@
+import 'package:barberOn/services/auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 
-import 'package:barberOn/screens/home.dart';
+import 'package:barberOn/screens/wrapper.dart';
+import 'package:provider/provider.dart';
+
+import 'models/user.dart';
 
 void main() {
   runApp(MyApp());
@@ -19,13 +23,16 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'BarberOn',
-      theme: ThemeData(
-        brightness: Brightness.dark,
+    return StreamProvider<User>.value(
+      value: AuthService().user,
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          brightness: Brightness.dark,
+        ),
+        home: Wrapper(),
+        navigatorObservers: [FirebaseAnalyticsObserver(analytics: analytics)],
       ),
-      home: HomePage(title: 'BarberOn'),
-      navigatorObservers: [FirebaseAnalyticsObserver(analytics: analytics)],
     );
   }
 }

@@ -1,42 +1,17 @@
-import 'package:barberOn/screens/login.dart';
 import 'package:barberOn/screens/profile.dart';
+import 'package:barberOn/services/auth.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatefulWidget {
-  HomePage({Key key, this.title}) : super(key: key);
+class HomePage extends StatelessWidget {
+  final AuthService _auth = AuthService();
 
-  final String title;
-
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'Home',
-              style: Theme.of(context).textTheme.bodyText2,
-            ),
-            IconButton(
-              icon: Icon(Icons.add),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => LoginPage(
-                              title: 'Login',
-                            )));
-              },
-            ),
             IconButton(
               icon: Icon(Icons.supervised_user_circle),
               onPressed: () {
@@ -45,6 +20,13 @@ class _HomePageState extends State<HomePage> {
                     MaterialPageRoute(
                         builder: (context) => ProfilePage(),
                         fullscreenDialog: true));
+              },
+            ),
+            FlatButton.icon(
+              icon: Icon(Icons.person),
+              label: Text('logout'),
+              onPressed: () async {
+                await _auth.signOut();
               },
             )
           ],

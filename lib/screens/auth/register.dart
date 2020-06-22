@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class RegisterPage extends StatefulWidget {
-  RegisterPage({Key key, this.title}) : super(key: key);
-
-  final String title;
+  RegisterPage({Key key}) : super(key: key);
 
   @override
   _RegisterPageState createState() => _RegisterPageState();
@@ -13,13 +10,12 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   String _email, _password;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text('Register'),
       ),
       body: Form(
         key: _formKey,
@@ -49,30 +45,12 @@ class _RegisterPageState extends State<RegisterPage> {
               obscureText: true,
             ),
             RaisedButton(
-              onPressed: _register,
+              onPressed: () {},
               child: Text('Cadastrar'),
             )
           ],
         ),
       ),
     );
-  }
-
-  Future<void> _register() async {
-    final formState = _formKey.currentState;
-    if (formState.validate()) {
-      formState.save();
-      try {
-        AuthResult result = await _auth.createUserWithEmailAndPassword(
-            email: _email, password: _password);
-        print(result.user.email);
-        result.user.sendEmailVerification();
-        Navigator.of(context).pop();
-      } catch (e) {
-        print(e.message);
-      }
-    } else {
-      print('invalid form');
-    }
   }
 }
