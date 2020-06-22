@@ -1,9 +1,6 @@
-import 'package:barberOn/screens/auth/register.dart';
-import 'package:barberOn/screens/profile.dart';
+import 'package:barberOn/screens/shared/loading.dart';
 import 'package:barberOn/services/auth.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.toggleView}) : super(key: key);
@@ -24,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       appBar: AppBar(
         title: Text('Login'),
       ),
