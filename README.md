@@ -17,19 +17,19 @@ Para gerenciamento de estado, utilizei o [Mobx](https://mobx.netlify.app/getting
 
 Para gerar o código do Mobx
 
-'''
+```
 flutter packages pub run build_runner build
-'''
+```
 
 Para gerar e ficar escurando as alterações
 
-'''
+```
 flutter packages pub run build_runner watch
-'''
+```
 
 Para limpar os conflitos enquanto escuta
 
-'''
+```
 flutter packages pub run build_runner watch --delete-conflicting-outputs
 
-'''
+```
