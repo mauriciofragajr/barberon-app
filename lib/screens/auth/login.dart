@@ -1,4 +1,4 @@
-import 'package:barberOn/screens/shared/loading.dart';
+import 'package:barberOn/components/loading.dart';
 import 'package:barberOn/services/auth.dart';
 import 'package:flutter/material.dart';
 

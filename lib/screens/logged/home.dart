@@ -1,7 +1,7 @@
 import 'package:barberOn/models/user.dart';
 import 'package:barberOn/screens/logged/first_access.dart';
 import 'package:barberOn/screens/logged/profile.dart';
-import 'package:barberOn/screens/shared/loading.dart';
+import 'package:barberOn/components/loading.dart';
 import 'package:barberOn/services/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
