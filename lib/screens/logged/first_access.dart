@@ -1,8 +1,7 @@
-import 'package:barberOn/screens/profile.dart';
 import 'package:barberOn/services/auth.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
+class FirstAccessPage extends StatelessWidget {
   final AuthService _auth = AuthService();
 
   @override
@@ -12,16 +11,7 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            IconButton(
-              icon: Icon(Icons.supervised_user_circle),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ProfilePage(),
-                        fullscreenDialog: true));
-              },
-            ),
+            Text('Primeiro Acesso, complete seu cadastro!'),
             FlatButton.icon(
               icon: Icon(Icons.person),
               label: Text('logout'),
