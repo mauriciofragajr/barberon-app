@@ -11,7 +11,7 @@ A few resources to get you started if this is your first Flutter project:
 - [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
 
 
-## Start
+## Gerenciamento de estado
 
 Para gerenciamento de estado, utilizei o [Mobx](https://mobx.netlify.app/getting-started).
 
