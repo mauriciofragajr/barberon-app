@@ -1,6 +1,6 @@
 import 'package:barberOn/models/user.dart';
 import 'package:barberOn/screens/auth/authenticate.dart';
-import 'package:barberOn/screens/logged/home.dart';
+import 'package:barberOn/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
