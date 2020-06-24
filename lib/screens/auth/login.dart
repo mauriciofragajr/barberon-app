@@ -73,10 +73,10 @@ class _LoginPageState extends State<LoginPage> {
                                 dynamic result =
                                     await _auth.signInWithEmailAndPassword(
                                         _email, _password);
-                                if (result == null) {
+                                if (result != null) {
                                   setState(() {
                                     loading = false;
-                                    error = 'Usuário ou senha inválida';
+                                    error = result;
                                   });
                                 }
                               }
@@ -90,10 +90,10 @@ class _LoginPageState extends State<LoginPage> {
                                 error = '';
                               });
                               dynamic result = await _auth.signInWithGoogle();
-                              if (result == null) {
+                              if (result != null) {
                                 setState(() {
                                   loading = false;
-                                  error = 'Usuário ou senha inválida';
+                                  error = result;
                                 });
                               }
                             },

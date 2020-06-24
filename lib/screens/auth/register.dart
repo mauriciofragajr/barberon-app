@@ -79,12 +79,12 @@ class _RegisterPageState extends State<RegisterPage> {
                     loading = true;
                     error = '';
                   });
-                  dynamic result =
-                      await _auth.registerWithEmailAndPassword(_email, _password);
-                  if (result == null) {
+                  dynamic result = await _auth.registerWithEmailAndPassword(
+                      _email, _password);
+                  if (result != null) {
                     setState(() {
                       loading = false;
-                      error = 'Não foi possível criar a conta';
+                      error = result;
                     });
                   }
                 }
