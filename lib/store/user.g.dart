@@ -9,18 +9,18 @@ part of 'user.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$UserStore on _UserStoreBase, Store {
-  final _$uidAtom = Atom(name: '_UserStoreBase.uid');
+  final _$userAtom = Atom(name: '_UserStoreBase.user');
 
   @override
-  String get uid {
-    _$uidAtom.reportRead();
-    return super.uid;
+  User get user {
+    _$userAtom.reportRead();
+    return super.user;
   }
 
   @override
-  set uid(String value) {
-    _$uidAtom.reportWrite(value, super.uid, () {
-      super.uid = value;
+  set user(User value) {
+    _$userAtom.reportWrite(value, super.user, () {
+      super.user = value;
     });
   }
 
@@ -28,11 +28,11 @@ mixin _$UserStore on _UserStoreBase, Store {
       ActionController(name: '_UserStoreBase');
 
   @override
-  void setUid(String uid) {
+  void setUser(String uid) {
     final _$actionInfo = _$_UserStoreBaseActionController.startAction(
-        name: '_UserStoreBase.setUid');
+        name: '_UserStoreBase.setUser');
     try {
-      return super.setUid(uid);
+      return super.setUser(uid);
     } finally {
       _$_UserStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -41,7 +41,7 @@ mixin _$UserStore on _UserStoreBase, Store {
   @override
   String toString() {
     return '''
-uid: ${uid}
+user: ${user}
     ''';
   }
 }
