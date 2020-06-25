@@ -1,10 +1,11 @@
 import 'package:barberOn/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-class AuthService {
+class AuthService with ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // create user obj based on firebase user
@@ -15,11 +16,14 @@ class AuthService {
   // auth change user stream
   Stream<User> get user {
     return _auth.onAuthStateChanged
-        //.map((FirebaseUser user) => _userFromFirebaseUser(user));
         .map(_userFromFirebaseUser);
   }
 
-  Future signInWithGoogle() async {
+  Stream<FirebaseUser> get firebaseUser {
+    return _auth.onAuthStateChanged;
+  }
+
+  Future<String> signInWithGoogle() async {
     try {
       final GoogleSignIn _googleSignIn = GoogleSignIn();
       final GoogleSignInAccount googleUser = await _googleSignIn.signIn();

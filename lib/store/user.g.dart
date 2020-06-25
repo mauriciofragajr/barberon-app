@@ -9,30 +9,85 @@ part of 'user.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$UserStore on _UserStoreBase, Store {
-  final _$userAtom = Atom(name: '_UserStoreBase.user');
+  final _$loadingAtom = Atom(name: '_UserStoreBase.loading');
 
   @override
-  User get user {
-    _$userAtom.reportRead();
-    return super.user;
+  bool get loading {
+    _$loadingAtom.reportRead();
+    return super.loading;
   }
 
   @override
-  set user(User value) {
-    _$userAtom.reportWrite(value, super.user, () {
-      super.user = value;
+  set loading(bool value) {
+    _$loadingAtom.reportWrite(value, super.loading, () {
+      super.loading = value;
     });
+  }
+
+  final _$firebaseUserAtom = Atom(name: '_UserStoreBase.firebaseUser');
+
+  @override
+  FirebaseUser get firebaseUser {
+    _$firebaseUserAtom.reportRead();
+    return super.firebaseUser;
+  }
+
+  @override
+  set firebaseUser(FirebaseUser value) {
+    _$firebaseUserAtom.reportWrite(value, super.firebaseUser, () {
+      super.firebaseUser = value;
+    });
+  }
+
+  final _$counterAtom = Atom(name: '_UserStoreBase.counter');
+
+  @override
+  int get counter {
+    _$counterAtom.reportRead();
+    return super.counter;
+  }
+
+  @override
+  set counter(int value) {
+    _$counterAtom.reportWrite(value, super.counter, () {
+      super.counter = value;
+    });
+  }
+
+  final _$loginGoogleAsyncAction = AsyncAction('_UserStoreBase.loginGoogle');
+
+  @override
+  Future<String> loginGoogle() {
+    return _$loginGoogleAsyncAction.run(() => super.loginGoogle());
+  }
+
+  final _$logoutAsyncAction = AsyncAction('_UserStoreBase.logout');
+
+  @override
+  Future<String> logout() {
+    return _$logoutAsyncAction.run(() => super.logout());
   }
 
   final _$_UserStoreBaseActionController =
       ActionController(name: '_UserStoreBase');
 
   @override
-  void setUser(String uid) {
+  void addCounter() {
     final _$actionInfo = _$_UserStoreBaseActionController.startAction(
-        name: '_UserStoreBase.setUser');
+        name: '_UserStoreBase.addCounter');
     try {
-      return super.setUser(uid);
+      return super.addCounter();
+    } finally {
+      _$_UserStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  Stream<FirebaseUser> authChanges() {
+    final _$actionInfo = _$_UserStoreBaseActionController.startAction(
+        name: '_UserStoreBase.authChanges');
+    try {
+      return super.authChanges();
     } finally {
       _$_UserStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -41,7 +96,9 @@ mixin _$UserStore on _UserStoreBase, Store {
   @override
   String toString() {
     return '''
-user: ${user}
+loading: ${loading},
+firebaseUser: ${firebaseUser},
+counter: ${counter}
     ''';
   }
 }

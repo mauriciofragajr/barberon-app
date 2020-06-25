@@ -1,5 +1,6 @@
 import 'package:barberOn/services/auth.dart';
 import 'package:barberOn/store/user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -25,15 +26,21 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<User>.value(
-      value: AuthService().user,
+    // final auth = AuthService();
+    final userStore = UserStore();
+    return MultiProvider(
+      // value: AuthService().user,
+      providers: [
+        Provider<UserStore>.value(value: userStore),
+        // StreamProvider<FirebaseUser>.value(value: userStore.authChanges())
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           brightness: Brightness.dark,
         ),
-        home: Wrapper(),
-        // home: Store(),
+        // home: Wrapper(),
+        home: Store(),
         navigatorObservers: [FirebaseAnalyticsObserver(analytics: analytics)],
       ),
     );
@@ -41,9 +48,9 @@ class _MyAppState extends State<MyApp> {
 }
 
 class Store extends StatelessWidget {
-  final userStore = UserStore();
   @override
   Widget build(BuildContext context) {
+    var userStore = Provider.of<UserStore>(context);
     return Container(
       child: Scaffold(
         body: Center(
@@ -51,22 +58,47 @@ class Store extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Observer(builder: (_) {
-                if (userStore.user != null) {
-                  return Text(userStore.user.uid);
+                if (userStore.firebaseUser != null) {
+                  return Text(userStore.firebaseUser.uid);
                 } else {
                   return Text('Ninguém logado');
                 }
               }),
               RaisedButton(
-                child: Text('Alterar usuario'),
+                child: Text('Login com google'),
                 onPressed: () {
-                  userStore.setUser('123456');
+                  userStore.loginGoogle();
                 },
-              )
+              ),
+              RaisedButton(
+                child: Text('Sair'),
+                onPressed: () {
+                  userStore.logout();
+                },
+              ),
+              RaisedButton(
+                child: Text('Add Counter Parent element'),
+                onPressed: () {
+                  userStore.addCounter();
+                },
+              ),
+              CustomWidget()
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class CustomWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var userStore = Provider.of<UserStore>(context);
+    return Container(
+      child: Observer(builder: (_) {
+        return Text(userStore.counter.toString());
+      }),
     );
   }
 }
