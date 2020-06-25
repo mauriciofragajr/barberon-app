@@ -14,10 +14,6 @@ abstract class _UserStoreBase with Store {
       firebaseUser = user;
     });
   }
-
-  @observable
-  bool loading;
-
   @observable
   FirebaseUser firebaseUser;
 
@@ -37,7 +33,8 @@ abstract class _UserStoreBase with Store {
   @action
   Future<String> loginGoogle() async {
     try {
-      return await _auth.signInWithGoogle();
+      var result = await _auth.signInWithGoogle();
+      return result;
     } catch (e) {
       print('Erro não tratado' + e.toString());
       return 'Erro na solicitação. Tente novamente.';

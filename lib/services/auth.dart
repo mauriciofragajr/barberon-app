@@ -114,7 +114,7 @@ class AuthService with ChangeNotifier {
     }
   }
 
-  Stream<DocumentSnapshot> getProfile(User user) {
+  Stream<DocumentSnapshot> getProfile(FirebaseUser user) {
     return Firestore.instance
         .collection('users')
         .document(user.uid)

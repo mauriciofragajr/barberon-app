@@ -1,15 +1,16 @@
-import 'package:barberOn/models/user.dart';
 import 'package:barberOn/screens/first_access.dart';
 import 'package:barberOn/screens/profile.dart';
 import 'package:barberOn/components/loading.dart';
 import 'package:barberOn/services/auth.dart';
+import 'package:barberOn/store/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key key, this.user}) : super(key: key);
+  const HomePage({Key key}) : super(key: key);
 
-  final User user;
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -19,17 +20,17 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final User user = widget.user;
+    var userStore = Provider.of<UserStore>(context);
 
     return Scaffold(
       body: StreamBuilder<DocumentSnapshot>(
-        stream: _auth.getProfile(user),
+        stream: _auth.getProfile(userStore.firebaseUser),
         builder:
             (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else if (snapshot.hasData) {
-            return checkFirstAcess(snapshot.data);
+            return checkFirstAcess(context, snapshot.data);
           }
           return Loading();
         },
@@ -37,7 +38,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Scaffold returnHome() {
+  Scaffold returnHome(BuildContext context) {
+    var userStore = Provider.of<UserStore>(context);
     return Scaffold(
       body: Center(
         child: Column(
@@ -57,7 +59,7 @@ class _HomePageState extends State<HomePage> {
               icon: Icon(Icons.person),
               label: Text('logout'),
               onPressed: () async {
-                await _auth.signOut();
+                await userStore.logout();
               },
             )
           ],
@@ -66,11 +68,11 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget checkFirstAcess(DocumentSnapshot snapshot) {
+  Widget checkFirstAcess(BuildContext context, DocumentSnapshot snapshot) {
     if (snapshot.data == null) {
       return FirstAccessPage();
     } else {
-      return returnHome();
+      return returnHome(context);
     }
   }
 }

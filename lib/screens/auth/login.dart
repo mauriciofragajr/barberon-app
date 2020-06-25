@@ -1,11 +1,11 @@
 import 'package:barberOn/components/loading.dart';
-import 'package:barberOn/services/auth.dart';
+import 'package:barberOn/screens/auth/register.dart';
+import 'package:barberOn/store/user.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key key, this.toggleView}) : super(key: key);
-
-  final Function toggleView;
+  LoginPage({Key key}) : super(key: key);
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -14,13 +14,13 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   String _email, _password;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final AuthService _auth = AuthService();
 
   String error = '';
   bool loading = false;
 
   @override
   Widget build(BuildContext context) {
+    var userStore = Provider.of<UserStore>(context);
     return loading
         ? Loading()
         : Scaffold(
@@ -70,15 +70,15 @@ class _LoginPageState extends State<LoginPage> {
                                   loading = true;
                                   error = '';
                                 });
-                                dynamic result =
-                                    await _auth.signInWithEmailAndPassword(
-                                        _email, _password);
-                                if (result != null) {
-                                  setState(() {
-                                    loading = false;
-                                    error = result;
-                                  });
-                                }
+                                // String result =
+                                //     await _auth.signInWithEmailAndPassword(
+                                //         _email, _password);
+                                // if (result != null) {
+                                //   setState(() {
+                                //     loading = false;
+                                //     error = result;
+                                //   });
+                                // }
                               }
                             },
                             child: Text('Entrar'),
@@ -89,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                                 loading = true;
                                 error = '';
                               });
-                              dynamic result = await _auth.signInWithGoogle();
+                              String result = await userStore.loginGoogle();
                               if (result != null) {
                                 setState(() {
                                   loading = false;
@@ -100,7 +100,12 @@ class _LoginPageState extends State<LoginPage> {
                             child: Text('Login com google'),
                           ),
                           RaisedButton(
-                            onPressed: () => widget.toggleView(),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => RegisterPage()));
+                            },
                             child: Text('Cadastrar'),
                           ),
                           SizedBox(height: 12.0),

@@ -9,21 +9,6 @@ part of 'user.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$UserStore on _UserStoreBase, Store {
-  final _$loadingAtom = Atom(name: '_UserStoreBase.loading');
-
-  @override
-  bool get loading {
-    _$loadingAtom.reportRead();
-    return super.loading;
-  }
-
-  @override
-  set loading(bool value) {
-    _$loadingAtom.reportWrite(value, super.loading, () {
-      super.loading = value;
-    });
-  }
-
   final _$firebaseUserAtom = Atom(name: '_UserStoreBase.firebaseUser');
 
   @override
@@ -96,7 +81,6 @@ mixin _$UserStore on _UserStoreBase, Store {
   @override
   String toString() {
     return '''
-loading: ${loading},
 firebaseUser: ${firebaseUser},
 counter: ${counter}
     ''';

@@ -1,16 +1,13 @@
-import 'package:barberOn/services/auth.dart';
+import 'package:barberOn/screens/auth/login.dart';
+import 'package:barberOn/screens/wrapper.dart';
 import 'package:barberOn/store/user.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 
-import 'package:barberOn/screens/wrapper.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
-
-import 'models/user.dart';
 
 void main() {
   runApp(MyApp());
@@ -26,21 +23,17 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    // final auth = AuthService();
     final userStore = UserStore();
     return MultiProvider(
-      // value: AuthService().user,
       providers: [
-        Provider<UserStore>.value(value: userStore),
-        // StreamProvider<FirebaseUser>.value(value: userStore.authChanges())
+        Provider<UserStore>.value(value: userStore)
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           brightness: Brightness.dark,
         ),
-        // home: Wrapper(),
-        home: Store(),
+        home: Wrapper(),
         navigatorObservers: [FirebaseAnalyticsObserver(analytics: analytics)],
       ),
     );
@@ -75,30 +68,11 @@ class Store extends StatelessWidget {
                 onPressed: () {
                   userStore.logout();
                 },
-              ),
-              RaisedButton(
-                child: Text('Add Counter Parent element'),
-                onPressed: () {
-                  userStore.addCounter();
-                },
-              ),
-              CustomWidget()
+              )
             ],
           ),
         ),
       ),
-    );
-  }
-}
-
-class CustomWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var userStore = Provider.of<UserStore>(context);
-    return Container(
-      child: Observer(builder: (_) {
-        return Text(userStore.counter.toString());
-      }),
     );
   }
 }

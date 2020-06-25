@@ -2,9 +2,7 @@ import 'package:barberOn/services/auth.dart';
 import 'package:flutter/material.dart';
 
 class RegisterPage extends StatefulWidget {
-  RegisterPage({Key key, this.toggleView}) : super(key: key);
-
-  final Function toggleView;
+  RegisterPage({Key key}) : super(key: key);
 
   @override
   _RegisterPageState createState() => _RegisterPageState();
@@ -94,7 +92,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 child: Text('Cadastrar'),
               ),
               RaisedButton(
-                onPressed: () => widget.toggleView(),
+                onPressed: () => null,
                 child: Text('Voltar'),
               ),
               SizedBox(height: 12.0),
