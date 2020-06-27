@@ -1,13 +1,12 @@
-import 'package:barberOn/screens/auth/login.dart';
-import 'package:barberOn/screens/wrapper.dart';
-import 'package:barberOn/store/user.dart';
+import 'package:barberOn/app/app_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
+
+import 'app/stores/auth_store.dart';
 
 void main() {
   runApp(MyApp());
@@ -23,55 +22,17 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    final userStore = UserStore();
+    final authStore = AuthStore();
     return MultiProvider(
-      providers: [
-        Provider<UserStore>.value(value: userStore)
-      ],
+      providers: [Provider<AuthStore>.value(value: authStore)],
       child: MaterialApp(
+        title: 'Barberon',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           brightness: Brightness.dark,
         ),
-        home: Wrapper(),
+        home: AppWidget(),
         navigatorObservers: [FirebaseAnalyticsObserver(analytics: analytics)],
-      ),
-    );
-  }
-}
-
-class Store extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var userStore = Provider.of<UserStore>(context);
-    return Container(
-      child: Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Observer(builder: (_) {
-                if (userStore.firebaseUser != null) {
-                  return Text(userStore.firebaseUser.uid);
-                } else {
-                  return Text('Ninguém logado');
-                }
-              }),
-              RaisedButton(
-                child: Text('Login com google'),
-                onPressed: () {
-                  userStore.loginGoogle();
-                },
-              ),
-              RaisedButton(
-                child: Text('Sair'),
-                onPressed: () {
-                  userStore.logout();
-                },
-              )
-            ],
-          ),
-        ),
       ),
     );
   }

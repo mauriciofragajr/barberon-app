@@ -1,4 +1,3 @@
-import 'package:barberOn/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -9,15 +8,15 @@ class AuthService with ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // create user obj based on firebase user
-  User _userFromFirebaseUser(FirebaseUser user) {
-    return user != null ? User(uid: user.uid) : null;
-  }
+  // User _userFromFirebaseUser(FirebaseUser user) {
+  //   return user != null ? User(uid: user.uid) : null;
+  // }
 
-  // auth change user stream
-  Stream<User> get user {
-    return _auth.onAuthStateChanged
-        .map(_userFromFirebaseUser);
-  }
+  // // auth change user stream
+  // Stream<User> get user {
+  //   return _auth.onAuthStateChanged
+  //       .map(_userFromFirebaseUser);
+  // }
 
   Stream<FirebaseUser> get firebaseUser {
     return _auth.onAuthStateChanged;
