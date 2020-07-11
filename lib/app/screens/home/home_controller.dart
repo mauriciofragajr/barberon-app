@@ -1,4 +1,3 @@
-import 'package:barberOn/app/stores/auth_store.dart';
 import 'package:mobx/mobx.dart';
 part 'home_controller.g.dart';
 

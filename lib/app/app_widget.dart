@@ -15,6 +15,7 @@ class AppWidget extends StatelessWidget {
     return Observer(builder: (_) {
       print('User Logged In: ' + authStore.isLoggedIn.toString());
       if (authStore.isLoggedIn) {
+        // Verificar se é primeiro acesso
         return HomeScreen();
       } else {
         return LoginScreen();
