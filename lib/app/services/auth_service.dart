@@ -26,8 +26,7 @@ class AuthService with ChangeNotifier {
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
-      final FirebaseUser user =
-          (await _auth.signInWithCredential(credential)).user;
+      await _auth.signInWithCredential(credential);
       return null;
     } on PlatformException catch (e) {
       print(e);
@@ -46,9 +45,7 @@ class AuthService with ChangeNotifier {
   Future<String> signInWithEmailAndPassword(
       String email, String password) async {
     try {
-      AuthResult result = await _auth.signInWithEmailAndPassword(
-          email: email, password: password);
-      FirebaseUser user = result.user;
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
       return null;
     } on PlatformException catch (e) {
       print(e);

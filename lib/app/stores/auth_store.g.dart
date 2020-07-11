@@ -40,6 +40,15 @@ mixin _$AuthStore on _AuthStoreBase, Store {
     return _$signInWithGoogleAsyncAction.run(() => super.signInWithGoogle());
   }
 
+  final _$signInWithEmailAndPasswordAsyncAction =
+      AsyncAction('_AuthStoreBase.signInWithEmailAndPassword');
+
+  @override
+  Future<String> signInWithEmailAndPassword(String email, String password) {
+    return _$signInWithEmailAndPasswordAsyncAction
+        .run(() => super.signInWithEmailAndPassword(email, password));
+  }
+
   final _$signOutAsyncAction = AsyncAction('_AuthStoreBase.signOut');
 
   @override

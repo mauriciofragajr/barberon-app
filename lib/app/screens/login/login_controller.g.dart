@@ -62,6 +62,49 @@ mixin _$LoginController on _LoginControllerBase, Store {
     return _$signInWithGoogleAsyncAction.run(() => super.signInWithGoogle());
   }
 
+  final _$signInAsyncAction = AsyncAction('_LoginControllerBase.signIn');
+
+  @override
+  Future<String> signIn() {
+    return _$signInAsyncAction.run(() => super.signIn());
+  }
+
+  final _$_LoginControllerBaseActionController =
+      ActionController(name: '_LoginControllerBase');
+
+  @override
+  dynamic changeEmail(String value) {
+    final _$actionInfo = _$_LoginControllerBaseActionController.startAction(
+        name: '_LoginControllerBase.changeEmail');
+    try {
+      return super.changeEmail(value);
+    } finally {
+      _$_LoginControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changePassword(String value) {
+    final _$actionInfo = _$_LoginControllerBaseActionController.startAction(
+        name: '_LoginControllerBase.changePassword');
+    try {
+      return super.changePassword(value);
+    } finally {
+      _$_LoginControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changeErrorMessage(String value) {
+    final _$actionInfo = _$_LoginControllerBaseActionController.startAction(
+        name: '_LoginControllerBase.changeErrorMessage');
+    try {
+      return super.changeErrorMessage(value);
+    } finally {
+      _$_LoginControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''

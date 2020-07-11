@@ -32,6 +32,17 @@ abstract class _AuthStoreBase with Store {
   }
 
   @action
+  Future<String> signInWithEmailAndPassword(
+      String email, String password) async {
+    try {
+      return await _auth.signInWithEmailAndPassword(email, password);
+    } catch (e) {
+      print('Error login email and password:' + e);
+      return e.toString();
+    }
+  }
+
+  @action
   Future<String> signOut() async {
     try {
       return await _auth.signOut();
