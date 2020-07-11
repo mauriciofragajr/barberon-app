@@ -1,13 +1,13 @@
 import 'package:barberOn/app/stores/auth_store.dart';
 import 'package:mobx/mobx.dart';
-part 'login_controller.g.dart';
+part 'register_controller.g.dart';
 
-class LoginController = _LoginControllerBase with _$LoginController;
+class RegisterController = _RegisterControllerBase with _$RegisterController;
 
-abstract class _LoginControllerBase with Store {
+abstract class _RegisterControllerBase with Store {
   final AuthStore authStore;
 
-  _LoginControllerBase(this.authStore);
+  _RegisterControllerBase(this.authStore);
 
   @observable
   String email;
@@ -20,18 +20,30 @@ abstract class _LoginControllerBase with Store {
   changePassword(String value) => password = value;
 
   @observable
+  String confirmPassword;
+  @action
+  changeConfirmPassword(String value) => confirmPassword = value;
+
+  @observable
   String errorMessage;
   @action
   changeErrorMessage(String value) => errorMessage = value;
 
   @action
-  Future<String> signInWithGoogle() async {
+  Future<String> register() async {
     changeErrorMessage(null);
     try {
-      String result = await authStore.signInWithGoogle();
+      if (!_validatePasswords()) {
+        String invalidMessage = 'As senhas não coincidem';
+        changeErrorMessage(invalidMessage);
+        return invalidMessage;
+      }
+      String result =
+          await authStore.registerWithEmailAndPassword(email, password);
       if (result != null) {
         changeErrorMessage(result);
       }
+
       return result;
     } catch (e) {
       print(e.toString());
@@ -39,19 +51,7 @@ abstract class _LoginControllerBase with Store {
     }
   }
 
-  @action
-  Future<String> signIn() async {
-    changeErrorMessage(null);
-    try {
-      String result =
-          await authStore.signInWithEmailAndPassword(email, password);
-      if (result != null) {
-        changeErrorMessage(result);
-      }
-      return result;
-    } catch (e) {
-      print(e.toString());
-      return 'Erro ao efetuar login. Tente novamente.';
-    }
+  bool _validatePasswords() {
+    return password == confirmPassword;
   }
 }

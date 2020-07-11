@@ -26,7 +26,6 @@ abstract class _AuthStoreBase with Store {
     try {
       return await _auth.signInWithGoogle();
     } catch (e) {
-      print('Error login google:' + e);
       return e.toString();
     }
   }
@@ -37,7 +36,16 @@ abstract class _AuthStoreBase with Store {
     try {
       return await _auth.signInWithEmailAndPassword(email, password);
     } catch (e) {
-      print('Error login email and password:' + e);
+      return e.toString();
+    }
+  }
+
+  @action
+  Future<String> registerWithEmailAndPassword(
+      String email, String password) async {
+    try {
+      return await _auth.registerWithEmailAndPassword(email, password);
+    } catch (e) {
       return e.toString();
     }
   }
@@ -47,7 +55,6 @@ abstract class _AuthStoreBase with Store {
     try {
       return await _auth.signOut();
     } catch (e) {
-      print('Error login google:' + e);
       return e.toString();
     }
   }

@@ -49,6 +49,15 @@ mixin _$AuthStore on _AuthStoreBase, Store {
         .run(() => super.signInWithEmailAndPassword(email, password));
   }
 
+  final _$registerWithEmailAndPasswordAsyncAction =
+      AsyncAction('_AuthStoreBase.registerWithEmailAndPassword');
+
+  @override
+  Future<String> registerWithEmailAndPassword(String email, String password) {
+    return _$registerWithEmailAndPasswordAsyncAction
+        .run(() => super.registerWithEmailAndPassword(email, password));
+  }
+
   final _$signOutAsyncAction = AsyncAction('_AuthStoreBase.signOut');
 
   @override

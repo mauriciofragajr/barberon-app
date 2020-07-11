@@ -29,7 +29,6 @@ class AuthService with ChangeNotifier {
       await _auth.signInWithCredential(credential);
       return null;
     } on PlatformException catch (e) {
-      print(e);
       switch (e.message) {
         case 'The email address is badly formatted.':
           return 'E-mail inválido.';
@@ -48,7 +47,6 @@ class AuthService with ChangeNotifier {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
       return null;
     } on PlatformException catch (e) {
-      print(e);
       switch (e.message) {
         case 'The email address is badly formatted.':
           return 'E-mail inválido.';
@@ -69,6 +67,7 @@ class AuthService with ChangeNotifier {
   // register with email and password
   Future registerWithEmailAndPassword(String email, String password) async {
     try {
+      print('Chamando api de criar usuario: ' + password);
       AuthResult result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       FirebaseUser user = result.user;
@@ -78,7 +77,6 @@ class AuthService with ChangeNotifier {
       // await DatabaseService(uid: user.uid).updateUserData('0','new crew member', 100);
       return null;
     } on PlatformException catch (e) {
-      print(e);
       switch (e.message) {
         case 'The email address is badly formatted.':
           return 'E-mail inválido.';

@@ -1,6 +1,10 @@
+import 'package:barberOn/app/screens/register/register_controller.dart';
+import 'package:barberOn/app/stores/auth_store.dart';
 import 'package:barberOn/app/utilities/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -8,165 +12,215 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  Widget _buildEmailTF() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          'E-mail',
-          style: kLabelStyle,
-        ),
-        SizedBox(height: 10.0),
-        Container(
-          alignment: Alignment.centerLeft,
-          decoration: kBoxDecorationStyle,
-          height: 60.0,
-          child: TextField(
-            keyboardType: TextInputType.emailAddress,
-            style: TextStyle(
-              color: Colors.white,
-              fontFamily: 'OpenSans',
-            ),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(
-                Icons.email,
-                color: Colors.white,
-              ),
-              hintText: 'Digite seu e-mail',
-              hintStyle: kHintTextStyle,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildPasswordTF() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          'Senha',
-          style: kLabelStyle,
-        ),
-        SizedBox(height: 10.0),
-        Container(
-          alignment: Alignment.centerLeft,
-          decoration: kBoxDecorationStyle,
-          height: 60.0,
-          child: TextField(
-            obscureText: true,
-            style: TextStyle(
-              color: Colors.white,
-              fontFamily: 'OpenSans',
-            ),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(
-                Icons.lock,
-                color: Colors.white,
-              ),
-              hintText: 'Digite sua senha',
-              hintStyle: kHintTextStyle,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildConfirmPasswordTF() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          'Confirmar Senha',
-          style: kLabelStyle,
-        ),
-        SizedBox(height: 10.0),
-        Container(
-          alignment: Alignment.centerLeft,
-          decoration: kBoxDecorationStyle,
-          height: 60.0,
-          child: TextField(
-            obscureText: true,
-            style: TextStyle(
-              color: Colors.white,
-              fontFamily: 'OpenSans',
-            ),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(
-                Icons.lock,
-                color: Colors.white,
-              ),
-              hintText: 'Confirme sua senha',
-              hintStyle: kHintTextStyle,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildRegisterBtn() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 5.0),
-      width: double.infinity,
-      child: RaisedButton(
-        elevation: 5.0,
-        onPressed: () => print('Register Button Pressed'),
-        padding: EdgeInsets.all(15.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ),
-        color: Colors.white,
-        child: Text(
-          'Cadastrar',
-          style: TextStyle(
-            color: Color(0xFF527DAA),
-            letterSpacing: 1.5,
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBackBtn() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 5.0),
-      width: double.infinity,
-      child: RaisedButton(
-        elevation: 2.0,
-        onPressed: () => Navigator.pop(context),
-        padding: EdgeInsets.all(15.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ),
-        color: Colors.transparent,
-        child: Text(
-          'VOLTAR',
-          style: TextStyle(
-            color: Color(0xFF527DAA),
-            letterSpacing: 1.5,
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
-          ),
-        ),
-      ),
-    );
-  }
+  final _registerFormKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    final authStore = Provider.of<AuthStore>(context);
+    final controller = RegisterController(authStore);
+
+    void submit() async {
+      if (_registerFormKey.currentState.validate()) {
+        _registerFormKey.currentState.save();
+        String result = await controller.register();
+        if (result == null) {
+          Navigator.pop(context);
+        }
+      }
+    }
+
+    Widget _buildErrorMessage() {
+      return Observer(builder: (_) {
+        return Text(
+            controller.errorMessage != null ? controller.errorMessage : "");
+      });
+    }
+
+    Widget _buildEmailTF() {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            'E-mail',
+            style: kLabelStyle,
+          ),
+          SizedBox(height: 10.0),
+          Container(
+            alignment: Alignment.centerLeft,
+            decoration: kBoxDecorationStyle,
+            height: 60.0,
+            child: TextFormField(
+              keyboardType: TextInputType.emailAddress,
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: 'OpenSans',
+              ),
+              validator: (value) {
+                if (value.isEmpty) {
+                  return "E-mail inválido";
+                } else {
+                  return null;
+                }
+              },
+              onSaved: controller.changeEmail,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.only(top: 14.0),
+                prefixIcon: Icon(
+                  Icons.email,
+                  color: Colors.white,
+                ),
+                hintText: 'Digite seu e-mail',
+                hintStyle: kHintTextStyle,
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+
+    Widget _buildPasswordTF() {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            'Senha',
+            style: kLabelStyle,
+          ),
+          SizedBox(height: 10.0),
+          Container(
+            alignment: Alignment.centerLeft,
+            decoration: kBoxDecorationStyle,
+            height: 60.0,
+            child: TextFormField(
+              obscureText: true,
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: 'OpenSans',
+              ),
+              validator: (value) {
+                if (value.isEmpty) {
+                  return "A senha não pode estar vazia.";
+                } else if (value.length < 8) {
+                  return "A senha precisa ter 8 ou mais caracteres.";
+                } else {
+                  return null;
+                }
+              },
+              onSaved: controller.changePassword,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.only(top: 14.0),
+                prefixIcon: Icon(
+                  Icons.lock,
+                  color: Colors.white,
+                ),
+                hintText: 'Digite sua senha',
+                hintStyle: kHintTextStyle,
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+
+    Widget _buildConfirmPasswordTF() {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            'Confirmar Senha',
+            style: kLabelStyle,
+          ),
+          SizedBox(height: 10.0),
+          Container(
+            alignment: Alignment.centerLeft,
+            decoration: kBoxDecorationStyle,
+            height: 60.0,
+            child: TextFormField(
+              obscureText: true,
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: 'OpenSans',
+              ),
+              validator: (value) {
+                if (value.isEmpty) {
+                  return "A senha não pode estar vazia.";
+                } else if (value.length < 8) {
+                  return "A senha precisa ter 8 ou mais caracteres.";
+                } else {
+                  return null;
+                }
+              },
+              onSaved: controller.changeConfirmPassword,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.only(top: 14.0),
+                prefixIcon: Icon(
+                  Icons.lock,
+                  color: Colors.white,
+                ),
+                hintText: 'Confirme sua senha',
+                hintStyle: kHintTextStyle,
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+
+    Widget _buildRegisterBtn() {
+      return Container(
+        padding: EdgeInsets.symmetric(vertical: 5.0),
+        width: double.infinity,
+        child: RaisedButton(
+          elevation: 5.0,
+          onPressed: () => submit(),
+          padding: EdgeInsets.all(15.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0),
+          ),
+          color: Colors.white,
+          child: Text(
+            'Cadastrar',
+            style: TextStyle(
+              color: Color(0xFF527DAA),
+              letterSpacing: 1.5,
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'OpenSans',
+            ),
+          ),
+        ),
+      );
+    }
+
+    Widget _buildBackBtn() {
+      return Container(
+        padding: EdgeInsets.symmetric(vertical: 5.0),
+        width: double.infinity,
+        child: RaisedButton(
+          elevation: 2.0,
+          onPressed: () => Navigator.pop(context),
+          padding: EdgeInsets.all(15.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0),
+          ),
+          color: Colors.transparent,
+          child: Text(
+            'VOLTAR',
+            style: TextStyle(
+              color: Color(0xFF527DAA),
+              letterSpacing: 1.5,
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'OpenSans',
+            ),
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
@@ -182,34 +236,38 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     horizontal: 40.0,
                     vertical: 60.0,
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        'Registrar',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'OpenSans',
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.bold,
+                  child: Form(
+                    key: _registerFormKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          'Registrar',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'OpenSans',
+                            fontSize: 30.0,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 15.0),
-                      _buildEmailTF(),
-                      SizedBox(
-                        height: 15.0,
-                      ),
-                      _buildPasswordTF(),
-                      SizedBox(
-                        height: 15.0,
-                      ),
-                      _buildConfirmPasswordTF(),
-                      SizedBox(
-                        height: 30.0,
-                      ),
-                      _buildRegisterBtn(),
-                      _buildBackBtn()
-                    ],
+                        SizedBox(height: 15.0),
+                        _buildEmailTF(),
+                        SizedBox(
+                          height: 15.0,
+                        ),
+                        _buildPasswordTF(),
+                        SizedBox(
+                          height: 15.0,
+                        ),
+                        _buildConfirmPasswordTF(),
+                        SizedBox(
+                          height: 30.0,
+                        ),
+                        _buildErrorMessage(),
+                        _buildRegisterBtn(),
+                        _buildBackBtn()
+                      ],
+                    ),
                   ),
                 ),
               )
